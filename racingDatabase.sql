@@ -3,7 +3,7 @@ CREATE TABLE Player
 (
     Player_ID serial primary key not null ,
     Gamertag varchar(12) unique not null ,
-    Name     varchar(100) not null ,
+    Name varchar(100) not null ,
     forename  varchar(100) not null ,
     Password varchar(160) not null
 );
