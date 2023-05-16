@@ -57,41 +57,24 @@ def fetchRace():
     print("Already up-to-date: ", count2)
     print("Added: " ,  count1)
 
-
-def fetchRaceResults():
+def fetchRaceresults():
     with urllib.request.urlopen("http://ergast.com/api/f1/2023/results.json?limit=1000") as url:
         data = json.load(url)
+        print(data)
         count1 = 0
         count2 = 0
         for race in data["MRData"]["RaceTable"]["Races"]:
-            try:
-                race_season = race["season"]
-                race_date = race["date"]
+            print(race["raceName"])
+            cur.execute("SELECT race_id FROM race inner join circuit  on race.circuit_id = circuit.circuit_id where circuit.name = %s and race.season = %s",(race["Circuit"]["circuitName"],(int(race["season"])),))
+            raceID = cur.fetchone()
+            print(cur.fetchone(), race["season"])
+            # first element of the tupel;
+            for result in race["Results"]:
 
-                cur.execute("SELECT Race_ID FROM Race WHERE Season = %s AND Date = %s", (race_season, race_date))
-                race_id = cur.fetchone()[0]
-                print(race_id)
+                print(result["number"], "raceID")
+                cur.execute("Select driver_id from driver ")
 
-                for result in race["Results"]:
-                    driver_name = result["Driver"]["driverId"]
 
-                    cur.execute("SELECT Driver_ID FROM Driver WHERE Name = %s", (driver_name,))
-                    driver_row = cur.fetchone()
-
-                    if driver_row:
-                        driver_id = driver_row[0]
-
-                        cur.execute("INSERT INTO Raceresults (Driver_ID, Race_ID, result) VALUES (%s, %s, %s)",
-                                    (driver_id, race_id, result["position"]))
-                        count1 += 1
-                    else:
-                        print("Fahrer '{}' nicht gefunden.".format(driver_name))
-            except:
-                conn.rollback()
-                count2 += 1
-
-    print("Already up-to-date: ", count2)
-    print("Added: ", count1)
 
 
 # daten einfügen und gp id eintragen wo bei der tabelle grandprix
@@ -110,7 +93,7 @@ cur = conn.cursor()
 fetchCircuits()
 fetchDrivers()
 fetchRace()
-fetchRaceResults()
+fetchRaceresults()
 
 # tabelle grandprix in circuits umbennen
 conn.commit()
