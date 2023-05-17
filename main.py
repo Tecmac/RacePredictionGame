@@ -48,7 +48,7 @@ def fetchRace():
             cur.execute("INSERT INTO race (season, time, date, circuit_id) "
                     "SELECT %s, %s, %s, circuit_id "
                     "FROM circuit "
-                    "WHERE name = %s",(race["season"], race["time"], race["date"], race["Circuit"]["circuitName"]))
+                    "WHERE name = %s",(int(race["season"]), race["time"], race["date"], race["Circuit"]["circuitName"]))
             count1 += 1
 
         except:
@@ -65,14 +65,19 @@ def fetchRaceresults():
         count2 = 0
         for race in data["MRData"]["RaceTable"]["Races"]:
             print(race["raceName"])
-            cur.execute("SELECT race_id FROM race inner join circuit  on race.circuit_id = circuit.circuit_id where circuit.name = %s and race.season = %s",(race["Circuit"]["circuitName"],(int(race["season"])),))
+            cur.execute("SELECT race_id FROM race inner join circuit  ON race.circuit_id = circuit.circuit_id "
+                        " Where circuit.name = %s and race.season= %s", (race["Circuit"]["circuitName"],race["season"]))
             raceID = cur.fetchone()
+            print(raceID)
+            print(race["Circuit"]["circuitName"])
             print(cur.fetchone(), race["season"])
             # first element of the tupel;
             for result in race["Results"]:
 
                 print(result["number"], "raceID")
-                cur.execute("Select driver_id from driver ")
+                cur.execute("Select driver_id from driver where driver.name = %s and driver.forename = %s and "
+                            "driver.nationality =%s and driver.birthday= %s", (result["Driver"]["familyName"],
+                             result["Driver"]["givenName"],result["Driver"]["nationality"][""],result["Driver"]["dateOfBirth"]))
 
 
 
