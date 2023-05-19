@@ -20,7 +20,6 @@ fetcher.fetchRace()
 fetcher.fetchRaceresults()
 
 
-
 # tabelle grandprix in circuits umbennen
 conn.commit()
 cur.close()
