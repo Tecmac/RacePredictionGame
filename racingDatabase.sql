@@ -4,7 +4,8 @@ CREATE TABLE Player
     Gamertag varchar(12) unique not null ,
     Name     varchar(100) not null ,
     forename  varchar(100) not null ,
-    Password varchar(160) not null
+    Password varchar(160) not null,
+    points int default null
 );
 
 CREATE TABLE Driver(
