@@ -1,9 +1,8 @@
-
 CREATE TABLE Player
 (
     Player_ID serial primary key not null ,
     Gamertag varchar(12) unique not null ,
-    Name varchar(100) not null ,
+    Name     varchar(100) not null ,
     forename  varchar(100) not null ,
     Password varchar(160) not null
 );
@@ -29,11 +28,12 @@ CREATE TABLE Circuit(
 
 CREATE TABLE Race(
     Race_ID serial primary key not null,
-    GP_ID integer references Circuit(Circuit_ID),
+    Circuit_ID integer references Circuit(Circuit_ID),
+    Name varchar not null,
     Season integer not null ,
     Time time not null,
     Date date not null,
-     unique (GP_ID,Season)
+     unique (Name,Season)
 );
 
 CREATE TABLE Tip
@@ -50,8 +50,8 @@ CREATE TABLE bet(
 );
 
 CREATE TABLE Raceresults(
-    Driver_ID int references Driver(Driver_ID),
-    Race_ID int references Race(Race_ID),
+    Driver_ID int references Driver(Driver_ID) not null,
+    Race_ID int references Race(Race_ID) not null,
     result smallint not null,
     unique (Driver_ID,Race_ID)
 )
