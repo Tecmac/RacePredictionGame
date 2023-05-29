@@ -1,6 +1,17 @@
 import psycopg2
 import urllib.request, json
-from DataFetcher import DataFetcher
+
+
+def createPlayer(gamertag,name,forename,password):
+    cur.execute("INSERT INTO player(GAMERTAG, NAME, FORENAME, PASSWORD) VALUES (%s,%s,%s,%s)",(gamertag,name,forename,password))
+
+def einloggen(gamertag,password):
+    cur.execute("Select gamertag From player where password = %s and gamertag= %s ",(gamertag,password))
+
+    if cur.fetchone() is not None:
+        print("Login erfolgreich!")
+    else:
+        print("Falsche Anmeldeinformationen!")
 
 try:
     conn = psycopg2.connect(  # making a connection to the server
@@ -11,13 +22,15 @@ try:
 except:
     print("Unable to connect to database")
 
+
 cur = conn.cursor()
 
-fetcher = DataFetcher(host="localhost", database="racing", user="postgres", password="")
+fetcher = DataFetcher()
 fetcher.fetchCircuits()
 fetcher.fetchDrivers()
 fetcher.fetchRace()
 fetcher.fetchRaceresults()
+
 
 
 # tabelle grandprix in circuits umbennen
