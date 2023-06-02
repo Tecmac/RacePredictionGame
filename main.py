@@ -1,5 +1,6 @@
 import psycopg2
 import urllib.request, json
+from datetime import date
 
 
 def createPlayer(gamertag,name,forename,password):
@@ -25,11 +26,24 @@ except:
 
 cur = conn.cursor()
 
-fetcher = DataFetcher()
-fetcher.fetchCircuits()
-fetcher.fetchDrivers()
-fetcher.fetchRace()
-fetcher.fetchRaceresults()
+with urllib.request.urlopen("http://ergast.com/api/f1/"+ str(date.today().year)+
+                            "/drivers.json?limit=1000") as url:
+    test = json.load(url)
+    print(test)
+    print(date.today())
+
+    for data in test["MRData"]["DriverTable"]["Drivers"]:
+        cur.execute(
+                "SELECT name, forename from driver where name = %s and forename = %s and nationality =%s and racenumber=%s and birthday =%s",
+                (data["familyName"], data["givenName"], data["nationality"],
+                 data["permanentNumber"], data["dateOfBirth"]))
+        print(cur.fetchall())
+    cur.execute(
+        "SELECT race.name, circuit.name from race inner join circuit on race.circuit_id = circuit.circuit_id where date> %s order by date",
+        (date.today(),))
+
+
+    #fahrer auswählen
 
 
 
