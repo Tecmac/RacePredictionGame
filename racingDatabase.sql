@@ -42,7 +42,8 @@ CREATE TABLE Tip
     Tip_ID serial primary key not null ,
     Driver_ID integer references Driver(Driver_ID),
     Race_ID integer references Race(Race_ID),
-    result smallint not null
+    result smallint not null,
+    points smallint default null
 );
 
 CREATE TABLE bet(

@@ -55,3 +55,6 @@ class Player(User):
             self.cur.execute("INSERT INTO bet(player_id, tip_id) VALUES (%s,%s)",(self.playerID, tipID))
             #self.cur.execute("")
             self.conn.commit()
+
+
+

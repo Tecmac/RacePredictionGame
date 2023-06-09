@@ -20,5 +20,10 @@ class Admin:
         self.cur.execute("DELETE FROM PLAYER WHERE player_id = %s", playerID)
         self.cur.execute("DELETE FROM bet WHERE player_id = %s", playerID)
 
+    def rateTips(self):
+        self.updateAll()
+        se
+
+
 
 
