@@ -47,7 +47,7 @@ except:
 
 # login("d","d")
 cur = conn.cursor()
-while 1:
+"""while 1:
     print("********** Login System **********")
     print("1.Signup")
     print("2.Login")
@@ -64,14 +64,65 @@ while 1:
         break
     else:
         print("Wrong Choice!")
-
+"""
 
 # datenbank tipp mit erge
 # für jedes tipp soll erstmal abgeglichen werden ob die renn und fahrer id bereits in raceresults existiert
 #
-cur.execute("Select driver_id, race_id from tip where points = -1")
-print(cur.fetchall())
-# cur.execute("Select result from raceresults  where driver_id = %s and race_id = %s")
+cur.execute("Select driver_id, race_id, result from tip where points = -1")
+
+tips = cur.fetchall()
+
+for tip in tips:
+    driver = 0
+    race = 0
+    result = 0
+    raceResult= 0
+    diff = 0
+
+
+    print(tip)
+    driver = tip[0]
+    race = tip[1]
+    result = tip[2]
+    print(race)
+    cur.execute("Select result from raceresults  where driver_id = %s and race_id = %s",(driver, race))
+    if cur.fetchone() != None:
+        raceResult = cur.fetchone()[0]
+        diff = abs(raceResult - result)
+
+        match diff:
+            case 0:
+                points = 25
+            case 1:
+                points = 18
+            case 2:
+                points = 15
+            case 3:
+                points = 12
+            case 4:
+                points = 10
+            case 5:
+                points = 8
+            case 6:
+                points = 6
+            case 7:
+                points = 4
+            case 8:
+                points = 2
+            case 9:
+                points = 1
+            case default:
+                points = 0
+
+        cur.execute("UPDATE tip set points = %s where driver_id = %s and race_id =%s", (points, driver, race))
+        conn.commit()
+
+    else:
+        print("Nothing new")
+
+cur.execute("UPDATE player  set points = sum()")
+
 # cur.execute()
 # fahrer auswählen
 
