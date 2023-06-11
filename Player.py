@@ -16,7 +16,8 @@ class Player(User):
 
     def save(self):
         self.cur.execute(
-            "INSERT INTO Player (Gamertag, Name, Forename, Password) VALUES (%s, %s, %s, %s) RETURNING Player_ID",
+            "INSERT INTO Player (Gamertag, Name, Forename, Password) VALUES (%s, %s, %s, crypt(%s, gen_salt('bf'))) "
+            "RETURNING Player_ID",
             (self.gamertag, self.name, self.forename, self.password))
         self.playerID = self.cur.fetchone()[0]
         self.conn.commit()

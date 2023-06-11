@@ -16,7 +16,7 @@ def login():
     username = input("Username: ")
     password = input("Password: ")
     cur.execute(
-        "SELECT Player_ID, Name, Forename FROM Player WHERE Gamertag = %s AND Password = %s",
+        "SELECT Player_ID, Name, Forename FROM Player WHERE Gamertag = %s AND Password = crypt(%s,Password)",
         (username, password)
     )
     result = cur.fetchone()
