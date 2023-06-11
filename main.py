@@ -116,12 +116,14 @@ for tip in tips:
                 points = 0
 
         cur.execute("UPDATE tip set points = %s where driver_id = %s and race_id =%s", (points, driver, race))
+        cur.execute("UPDATE player  set points = sum(tip.points)  "
+                    "from bet inner join player p on bet.player_id = p.player_id inner join tip on tip.tip_id = bet.tip_id ")
+
         conn.commit()
 
     else:
         print("Nothing new")
 
-cur.execute("UPDATE player  set points = sum()")
 
 # cur.execute()
 # fahrer auswählen
