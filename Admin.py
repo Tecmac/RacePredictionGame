@@ -14,15 +14,13 @@ class Admin:
         fetcher.fetchRace()
         fetcher.fetchRaceresults()
 
-    def deleteUser(self, gamertag):
+    def deletePlayer(self, gamertag):
         self.cur.execute("SELECT player_id FROM Player WHERE gamertag = %s",gamertag)
         playerID = self.cur.fetchone()
         self.cur.execute("DELETE FROM PLAYER WHERE player_id = %s", playerID)
         self.cur.execute("DELETE FROM bet WHERE player_id = %s", playerID)
 
-    def rateTips(self):
-        self.updateAll()
-        se
+
 
 
 

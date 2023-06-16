@@ -1,7 +1,6 @@
 import psycopg2
 from Player import Player
-
-
+from flask import Flask
 def register():
     gamertag = input()
     name = input()
@@ -47,7 +46,7 @@ except:
 
 # login("d","d")
 cur = conn.cursor()
-"""while 1:
+while 1:
     print("********** Login System **********")
     print("1.Signup")
     print("2.Login")
@@ -58,13 +57,15 @@ cur = conn.cursor()
         player.giveTip()
     elif ch == 2:
         player = login()
-        player.giveTip()
+     #   player.giveTip()
+
+        player.getAllTips()
 
     elif ch == 3:
         break
     else:
         print("Wrong Choice!")
-"""
+
 
 # datenbank tipp mit erge
 # für jedes tipp soll erstmal abgeglichen werden ob die renn und fahrer id bereits in raceresults existiert

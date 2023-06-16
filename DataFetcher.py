@@ -1,7 +1,5 @@
 import psycopg2
 import urllib.request, json
-
-import psycopg2
 import urllib.request
 import json
 from DatabaseConnection import DatabaseConnection
