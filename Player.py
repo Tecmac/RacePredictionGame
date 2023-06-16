@@ -3,6 +3,8 @@ import urllib.request, json
 from DatabaseConnection import DatabaseConnection
 from datetime import date
 from User import User
+from PlayerDAO import PlayerDAO
+
 
 
 class Player(User):
@@ -14,13 +16,16 @@ class Player(User):
         self.conn = DatabaseConnection().connect()
         self.cur = self.conn.cursor()
 
-    def save(self):
-        self.cur.execute(
-            "INSERT INTO Player (Gamertag, Name, Forename, Password) VALUES (%s, %s, %s, crypt(%s, gen_salt('bf'))) "
-            "RETURNING Player_ID",
-            (self.gamertag, self.name, self.forename, self.password))
-        self.playerID = self.cur.fetchone()[0]
-        self.conn.commit()
+    def save(self, ):
+        """""   self.cur.execute(
+               "INSERT INTO Player (Gamertag, Name, Forename, Password) VALUES (%s, %s, %s, crypt(%s, gen_salt('bf'))) "
+               "RETURNING Player_ID",
+               (self.gamertag, self.name, self.forename, self.password))
+           self.playerID = self.cur.fetchone()[0]
+           self.conn.commit()
+           ## """
+        p = PlayerDAO()
+        self.playerID= p.save(self)
     def giveTip(self):
         # zeige die Rennen die anstehen
         # wähle das rennen aus dropdown menü
@@ -56,6 +61,24 @@ class Player(User):
             self.cur.execute("INSERT INTO bet(player_id, tip_id) VALUES (%s,%s)",(self.playerID, tipID))
             #self.cur.execute("")
             self.conn.commit()
+
+
+    def getAllTips(self):
+        """""   self.cur.execute("Select d.forename, d.name,r.name, t.result from player inner join bet b on "
+                         "player.player_id = b.player_id inner join tip t on t.tip_id = b.tip_id inner join driver d "
+                         "on t.driver_id = d.driver_id inner join race r on t.race_id = r.race_id where b.player_id = "
+                         "%s", (self.playerID,))
+        print(self.cur.fetchall())"""
+        p = PlayerDAO()
+        p.getAllTips(self.playerID)
+
+
+    def getTipsRace(self, race_ID):
+        p = PlayerDAO
+        p.getTipsRace(race_ID)
+
+
+        
 
 
 
