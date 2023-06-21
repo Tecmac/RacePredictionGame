@@ -1,6 +1,6 @@
 import psycopg2
 from Player import Player
-from flask import Flask
+import threading
 def register():
     gamertag = input()
     name = input()

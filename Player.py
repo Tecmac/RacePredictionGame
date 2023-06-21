@@ -4,7 +4,7 @@ from DatabaseConnection import DatabaseConnection
 from datetime import date
 from User import User
 from PlayerDAO import PlayerDAO
-
+from databaseTables import DriverDAO, RaceDAO, BetDAO, TipDAO
 
 
 class Player(User):
@@ -24,19 +24,44 @@ class Player(User):
            self.playerID = self.cur.fetchone()[0]
            self.conn.commit()
            ## """
-        p = PlayerDAO()
-        self.playerID= p.save(self)
+        p = PlayerDAO
+        self.playerID = p.save(self.gamertag,self.name, self.forename, self.password)
+
     def giveTip(self):
         # zeige die Rennen die anstehen
         # wähle das rennen aus dropdown menü
         # zeige die Fahrer
         # wähle fahrer aus den dropdown
+
+        d = DriverDAO.DriverDAO
+        r = RaceDAO.RaceDAO
+        b = BetDAO.BetDAO
+        t = TipDAO.TipDAO
+
         with urllib.request.urlopen("http://ergast.com/api/f1/" + str(date.today().year) +
                                     "/drivers.json?limit=1000") as url:
             test = json.load(url)
             print(test)
             print(date.today())
+            for data in test["MRData"]["DriverTable"]["Drivers"]:
+                d.read(data["familyName"], data["givenName"], data["nationality"],
+                       data["permanentNumber"], data["dateOfBirth"])
 
+            print("Gebens Sie die FahrerID ein ( Zahl am Anfang des Fahrers)")
+            driver: int = input()
+
+            print(r.upcomingRaces())
+            print("Geben Sie die Renn_ID ein")
+            race = input()
+
+            print("Welchen Platz erreicht der Fahrer? 1-20")
+            placement = input()
+            tip_ID = t.create(driver,race,placement)
+            b.create(self.playerID,tip_ID)
+
+
+
+            """
             for data in test["MRData"]["DriverTable"]["Drivers"]:
                 self.cur.execute(
                     "SELECT driver_id,name, forename from driver where name = %s and forename = %s and nationality =%s and racenumber=%s and birthday =%s",
@@ -61,6 +86,7 @@ class Player(User):
             self.cur.execute("INSERT INTO bet(player_id, tip_id) VALUES (%s,%s)",(self.playerID, tipID))
             #self.cur.execute("")
             self.conn.commit()
+                """
 
 
     def getAllTips(self):
