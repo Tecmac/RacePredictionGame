@@ -24,8 +24,8 @@ class Player(User):
            self.playerID = self.cur.fetchone()[0]
            self.conn.commit()
            ## """
-        p = PlayerDAO
-        self.playerID = p.save(self.gamertag,self.name, self.forename, self.password)
+        p = PlayerDAO()
+        self.playerID = p.save( self.gamertag,self.name, self.forename, self.password)
 
     def giveTip(self):
         # zeige die Rennen die anstehen
@@ -33,10 +33,10 @@ class Player(User):
         # zeige die Fahrer
         # wähle fahrer aus den dropdown
 
-        d = DriverDAO.DriverDAO
-        r = RaceDAO.RaceDAO
-        b = BetDAO.BetDAO
-        t = TipDAO.TipDAO
+        d = DriverDAO.DriverDAO()
+        r = RaceDAO.RaceDAO()
+        b = BetDAO.BetDAO()
+        t = TipDAO.TipDAO()
 
         with urllib.request.urlopen("http://ergast.com/api/f1/" + str(date.today().year) +
                                     "/drivers.json?limit=1000") as url:
