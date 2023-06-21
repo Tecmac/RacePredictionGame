@@ -132,7 +132,6 @@ def evaluateTips_thread():
 
     # cur.execute()
     # fahrer auswählen
-
     # tabelle grandprix in circuits umbennen
     conn.commit()
     cur.close()
