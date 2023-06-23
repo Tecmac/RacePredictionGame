@@ -38,6 +38,12 @@ class PlayerDAO:
         print(self.cur.fetchall())
         self.conn.commit()
 
+    def login(self,  username, password):
+        self.cur.execute(
+            "SELECT Player_ID, Name, Forename FROM Player WHERE Gamertag = %s AND Password = crypt(%s,Password)",
+            (username, password))
+        return self.cur.fetchone()
+
 
 
 

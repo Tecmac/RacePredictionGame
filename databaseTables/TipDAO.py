@@ -11,5 +11,9 @@ class TipDAO:
                          (driver, race, placement))
         self.conn.commit()
         return self.cur.fetchone()
+    def unevaluatedTips(self):
+        self.cur.execute("Select driver_id, race_id, result from tip where points = -1")
+        return self.cur.fetchall()
+
 
 

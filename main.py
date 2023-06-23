@@ -1,6 +1,10 @@
+import threading
+
 import psycopg2
 from Player import Player
-from  threading import Thread
+from PlayerDAO import PlayerDAO
+from databaseTables.TipDAO import TipDAO
+from threading import Thread
 
 
 def register():
@@ -16,11 +20,9 @@ def register():
 def login():
     username = input("Username: ")
     password = input("Password: ")
-    cur.execute(
-        "SELECT Player_ID, Name, Forename FROM Player WHERE Gamertag = %s AND Password = crypt(%s,Password)",
-        (username, password)
-    )
-    result = cur.fetchone()
+    p = PlayerDAO()
+
+    result = p.login(username, password)
     if result:
         playerID = result[0]
         name = result[1]
@@ -50,7 +52,7 @@ except:
 cur = conn.cursor()
 
 
-def ui_thread():
+def ui():
     while 1:
         print("********** Login System **********")
         print("1.Signup")
@@ -70,31 +72,40 @@ def ui_thread():
             break
         else:
             print("Wrong Choice!")
-            threading.Thread.start()
+
+
 # datenbank tipp mit erge
 # für jedes tipp soll erstmal abgeglichen werden ob die renn und fahrer id bereits in raceresults existiert
 #
 
 def evaluateTips_thread():
-    cur.execute("Select driver_id, race_id, result from tip where points = -1")
 
-    tips = cur.fetchall()
+    t = TipDAO()
+
+    tips = t.unevaluatedTips()
+    print(tips)
 
     for tip in tips:
-        driver = 0
-        race = 0
-        result = 0
         raceResult = 0
-        diff = 0
-
         print(tip)
         driver = tip[0]
         race = tip[1]
         result = tip[2]
         print(race)
+        print(result)
+
         cur.execute("Select result from raceresults  where driver_id = %s and race_id = %s", (driver, race))
-        if cur.fetchone() != None:
-            raceResult = cur.fetchone()[0]
+        row = cur.fetchone()
+        if row is not None:
+            raceResult = row[0]
+            print(raceResult)
+        else:
+            print("Kein Ergebnis gefunden.")
+
+        if raceResult != 0:
+
+            print(raceResult)
+            print(result)
             diff = abs(raceResult - result)
 
             match diff:
@@ -122,8 +133,11 @@ def evaluateTips_thread():
                     points = 0
 
             cur.execute("UPDATE tip set points = %s where driver_id = %s and race_id =%s", (points, driver, race))
-            cur.execute("UPDATE player  set points = sum(tip.points)  "
-                        "from bet inner join player p on bet.player_id = p.player_id inner join tip on tip.tip_id = bet.tip_id ")
+            conn.commit()
+            cur.execute("UPDATE player p SET points = "
+                        "(SELECT SUM(t.points) FROM tip t "
+                        "INNER JOIN bet b ON b.tip_id = t.tip_id "
+                        "WHERE b.player_id = p.player_id)")
 
             conn.commit()
 
@@ -133,12 +147,16 @@ def evaluateTips_thread():
     # cur.execute()
     # fahrer auswählen
     # tabelle grandprix in circuits umbennen
-    conn.commit()
-    cur.close()
-    conn.close()
+    #  conn.commit()
+    # cur.close()
+    # conn.close()
     # Get the json data from the website: drivers,grand prix,Rennergebnis
     # fetch it in the database
+t1 = threading.Thread(target=ui())
+t2 = threading.Thread(target=evaluateTips_thread)
+t1.start()
+t2.start()
+t1.join()
+t2.join()
 
 
-t1 = Thread(target= ui_thread())
-t2 = Thread(target=evaluateTips_thread())
