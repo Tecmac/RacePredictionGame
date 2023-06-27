@@ -66,12 +66,30 @@ def ui():
         ch = int(input("Enter your choice: "))
         if ch == 1:
             player = register()
-            player.giveTip()
+            th = int(input("1 = Tipp abgeben; 2 = alle tips sehen ; 3= tips von einem rennen sehen"))
+
+            if th == 1:
+                player.giveTip()
+            if th == 2:
+                player.getAllTips()
+            if th == 3:
+                print("Welches Rennen dieser Saison?")
+                id = input()
+                player.getTipsRace(id)
+
         elif ch == 2:
             player = login()
-            player.giveTip()
 
-            player.getAllTips()
+            th = int(input("1 = Tipp abgeben; 2 = alle tips sehen ; 3= tips von einem rennen sehen"))
+
+            if th == 1:
+                player.giveTip()
+            if th == 2:
+                player.getAllTips()
+            if th== 3:
+                print("Welches Rennen dieser Saison?")
+                id = input()
+                player.getTipsRace(id)
 
         elif ch == 3:
             break
