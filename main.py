@@ -3,8 +3,9 @@ import threading
 import psycopg2
 from Player import Player
 from PlayerDAO import PlayerDAO
-from databaseTables.TipDAO import TipDAO
+from databaseTables import TipDAO, RaceResultsDAO
 from threading import Thread
+
 
 
 def register():
@@ -13,8 +14,12 @@ def register():
     forename = input()
     password = input()
     player = Player(gamertag, name, forename, password)
-    player.save()
-    return player
+    t = player.save()
+    if t == 1:
+        return player
+    else:
+        print("Gib bitte einen anderen gamertag an")
+        return register()
 
 
 def login():
@@ -64,7 +69,7 @@ def ui():
             player.giveTip()
         elif ch == 2:
             player = login()
-            #   player.giveTip()
+            player.giveTip()
 
             player.getAllTips()
 
@@ -80,7 +85,9 @@ def ui():
 
 def evaluateTips_thread():
 
-    t = TipDAO()
+    t = TipDAO.TipDAO()
+    r = RaceResultsDAO.RaceResultsDAO()
+    p = PlayerDAO()
 
     tips = t.unevaluatedTips()
     print(tips)
@@ -93,9 +100,9 @@ def evaluateTips_thread():
         result = tip[2]
         print(race)
         print(result)
-
-        cur.execute("Select result from raceresults  where driver_id = %s and race_id = %s", (driver, race))
-        row = cur.fetchone()
+        row = r.readResultRaceDriver(race, driver)
+       # cur.execute("Select result from raceresults  where driver_id = %s and race_id = %s", (driver, race))
+       # row = cur.fetchone()
         if row is not None:
             raceResult = row[0]
             print(raceResult)
@@ -131,15 +138,17 @@ def evaluateTips_thread():
                     points = 1
                 case default:
                     points = 0
+            t.updateTips(points, driver, race)
+            p.updatePlayerPoints()
 
-            cur.execute("UPDATE tip set points = %s where driver_id = %s and race_id =%s", (points, driver, race))
-            conn.commit()
-            cur.execute("UPDATE player p SET points = "
-                        "(SELECT SUM(t.points) FROM tip t "
-                        "INNER JOIN bet b ON b.tip_id = t.tip_id "
-                        "WHERE b.player_id = p.player_id)")
+           # cur.execute("UPDATE tip set points = %s where driver_id = %s and race_id =%s", (points, driver, race))
+         #   conn.commit()
+         #   cur.execute("UPDATE player p SET points = "
+            #            "(SELECT SUM(t.points) FROM tip t "
+        #            "INNER JOIN bet b ON b.tip_id = t.tip_id "
+                 #       "WHERE b.player_id = p.player_id)")
 
-            conn.commit()
+           # conn.commit()
 
         else:
             print("Nothing new")

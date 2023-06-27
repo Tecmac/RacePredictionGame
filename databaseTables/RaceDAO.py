@@ -13,3 +13,4 @@ class RaceDAO:
             "date > %s order by date",
             (date.today(),))
         self.conn.commit()
+        return self.cur.fetchall()

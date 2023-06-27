@@ -15,5 +15,10 @@ class TipDAO:
         self.cur.execute("Select driver_id, race_id, result from tip where points = -1")
         return self.cur.fetchall()
 
+    def updateTips(self,points, race, driver):
+        self.cur.execute("UPDATE tip set points = %s where driver_id = %s and race_id =%s", (points, driver, race))
+        self.conn.commit()
+
+
 
 

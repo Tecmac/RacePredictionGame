@@ -44,6 +44,15 @@ class PlayerDAO:
             (username, password))
         return self.cur.fetchone()
 
+    def updatePlayerPoints(self):
+        self.cur.execute("UPDATE player p SET points = "
+                         "(SELECT SUM(t.points) FROM tip t "
+                         "INNER JOIN bet b ON b.tip_id = t.tip_id "
+                         "WHERE b.player_id = p.player_id)")
+
+        self.conn.commit()
+
+
 
 
 

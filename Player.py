@@ -25,7 +25,12 @@ class Player(User):
            self.conn.commit()
            ## """
         p = PlayerDAO()
-        self.playerID = p.save( self.gamertag,self.name, self.forename, self.password)
+        try:
+            self.playerID = p.save( self.gamertag,self.name, self.forename, self.password)
+            return 1
+        except:
+            print("Error Saving")
+            return 2
 
     def giveTip(self):
         # zeige die Rennen die anstehen
@@ -104,7 +109,6 @@ class Player(User):
         p.getTipsRace(race_ID)
 
 
-        
 
 
 
