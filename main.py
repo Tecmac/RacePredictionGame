@@ -23,7 +23,7 @@ def register():
 
 
 def login(type):
-    username = input("Username: ")
+    username = input("Gamertag: ")
     password = input("Password: ")
     if type == 1:
 
