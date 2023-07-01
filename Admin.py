@@ -1,7 +1,8 @@
 
 from DataFetcher import DataFetcher
 from DatabaseConnection import DatabaseConnection
-class Admin:
+from User import User
+class Admin(User):
     def __init__(self, gamertag, name, forename, password):
         super().__init__(gamertag, name, forename, password)
         self.conn = DatabaseConnection().connect()

@@ -1,10 +1,8 @@
 import threading
-
-import psycopg2
 from Player import Player
 from PlayerDAO import PlayerDAO
 from databaseTables import TipDAO, RaceResultsDAO
-from threading import Thread
+from Admin import Admin
 
 
 
@@ -13,6 +11,8 @@ def register():
     name = input()
     forename = input()
     password = input()
+
+
     player = Player(gamertag, name, forename, password)
     t = player.save()
     if t == 1:
@@ -22,39 +22,40 @@ def register():
         return register()
 
 
-def login():
+def login(type):
     username = input("Username: ")
     password = input("Password: ")
-    p = PlayerDAO()
+    if type == 1:
 
-    result = p.login(username, password)
-    if result:
-        playerID = result[0]
-        name = result[1]
-        forename = result[2]
-        player = Player(username, name, forename, password)
-        player.playerID = playerID
-        print("Login erfolgreich!")
-        return player
-    else:
-        print("Falsche Anmeldeinformationen!")
-        return None
+        p = PlayerDAO()
+
+        result = p.login(username, password)
+        if result:
+            playerID = result[0]
+            name = result[1]
+            forename = result[2]
+            player = Player(username, name, forename, password)
+            player.playerID = playerID
+            print("Login erfolgreich!")
+            return player
+        else:
+            print("Falsche Anmeldeinformationen!")
+            return None
+    if type == 2:
+        if username == "Admin" and password == "test":
+            a = Admin("Admin","Admin","Admin", "test")
+            return a
+        else:
+            print("Falsche Anmeldeinformationen!")
+            return None
 
 
 # thread 2
 # datenn an jedem mittwoch abrufen
 # tipps bewerten und dem spieler gutschreiben
-try:
-    conn = psycopg2.connect(  # making a connection to the server
-        host="localhost",
-        database="racing",
-        user="postgres",
-        password="")
-except:
-    print("Unable to connect to database")
+
 
 # login("d","d")
-cur = conn.cursor()
 
 
 def ui():
@@ -63,23 +64,33 @@ def ui():
         print("1.Signup")
         print("2.Login")
         print("3.Exit")
+        print("4.Admin Login")
         ch = int(input("Enter your choice: "))
         if ch == 1:
             player = register()
-            th = int(input("1 = Tipp abgeben; 2 = alle tips sehen ; 3= tips von einem rennen sehen"))
+            th = int(input("1 = Tipp abgeben; 2 = alle tips sehen ; 3= tips von einem rennen sehen, "))
 
             if th == 1:
-                player.giveTip()
+                try:
+                    player.giveTip()
+                except:
+                    print("Fehlgeschlagene")
+                    break
             if th == 2:
-                player.getAllTips()
+                try:
+                    player.getAllTips()
+                except:
+                    print("Fehlgeschlagen")
             if th == 3:
                 print("Welches Rennen dieser Saison?")
                 id = input()
-                player.getTipsRace(id)
+                try:
+                    player.getTipsRace(id)
+                except:
+                    print("Fehlgeschlagen")
 
         elif ch == 2:
-            player = login()
-
+            player = login(1)
             th = int(input("1 = Tipp abgeben; 2 = alle tips sehen ; 3= tips von einem rennen sehen"))
 
             if th == 1:
@@ -93,6 +104,22 @@ def ui():
 
         elif ch == 3:
             break
+        elif ch == 4:
+            admin = login(2)
+
+            th = int(input("1 = Renndatenbank updaten, 2 = Spieler löschen"))
+            if th == 1:
+                try:
+                    admin.updateAll()
+                except:
+                    print("Fehlgeschlagen")
+            if th == 2:
+                gamertag = input("Wie heißt der Gamertag des Spielers")
+                try:
+                    admin.deletePlayer(gamertag)
+                except:
+                    print("Fehlgeschlagen")
+
         else:
             print("Wrong Choice!")
 
