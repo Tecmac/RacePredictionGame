@@ -114,7 +114,7 @@ def ui():
                 except:
                     print("Fehlgeschlagen")
             if th == 2:
-                gamertag = input("Wie heißt der Gamertag des Spielers")
+                gamertag = str(input("Wie heißt der Gamertag des Spielers"))
                 try:
                     admin.deletePlayer(gamertag)
                 except:
