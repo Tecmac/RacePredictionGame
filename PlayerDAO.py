@@ -17,8 +17,8 @@ class PlayerDAO:
     def delete(self,gamertag):
         self.cur.execute("SELECT player_id FROM Player WHERE gamertag = %s", gamertag)
         playerID = self.cur.fetchone()
-        self.cur.execute("DELETE FROM PLAYER WHERE player_id = %s", playerID)
         self.cur.execute("DELETE FROM bet WHERE player_id = %s", playerID)
+        self.cur.execute("DELETE FROM PLAYER WHERE player_id = %s", playerID)
         self.conn.commit()
 
     def getAllTips(self,player_ID):
