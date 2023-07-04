@@ -3,7 +3,8 @@ from Player import Player
 from PlayerDAO import PlayerDAO
 from databaseTables import TipDAO, RaceResultsDAO
 from Admin import Admin
-
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 
 def register():
@@ -11,7 +12,6 @@ def register():
     name = input()
     forename = input()
     password = input()
-
 
     player = Player(gamertag, name, forename, password)
     t = player.save()
@@ -43,7 +43,7 @@ def login(type):
             return None
     if type == 2:
         if username == "Admin" and password == "test":
-            a = Admin("Admin","Admin","Admin", "test")
+            a = Admin("Admin", "Admin", "Admin", "test")
             return a
         else:
             print("Falsche Anmeldeinformationen!")
@@ -97,7 +97,7 @@ def ui():
                 player.giveTip()
             if th == 2:
                 player.getAllTips()
-            if th== 3:
+            if th == 3:
                 print("Welches Rennen dieser Saison?")
                 id = input()
                 player.getTipsRace(id)
@@ -129,7 +129,6 @@ def ui():
 #
 
 def evaluateTips_thread():
-
     t = TipDAO.TipDAO()
     r = RaceResultsDAO.RaceResultsDAO()
     p = PlayerDAO()
@@ -144,10 +143,11 @@ def evaluateTips_thread():
         race = tip[1]
         result = tip[2]
         print(race)
+        print(driver)
         print(result)
         row = r.readResultRaceDriver(race, driver)
-       # cur.execute("Select result from raceresults  where driver_id = %s and race_id = %s", (driver, race))
-       # row = cur.fetchone()
+        # cur.execute("Select result from raceresults  where driver_id = %s and race_id = %s", (driver, race))
+        # row = cur.fetchone()
         if row is not None:
             raceResult = row[0]
             print(raceResult)
@@ -183,17 +183,17 @@ def evaluateTips_thread():
                     points = 1
                 case default:
                     points = 0
-            t.updateTips(points, driver, race)
+            t.updateTips(points, race, driver)
             p.updatePlayerPoints()
 
-           # cur.execute("UPDATE tip set points = %s where driver_id = %s and race_id =%s", (points, driver, race))
-         #   conn.commit()
-         #   cur.execute("UPDATE player p SET points = "
-            #            "(SELECT SUM(t.points) FROM tip t "
+        # cur.execute("UPDATE tip set points = %s where driver_id = %s and race_id =%s", (points, driver, race))
+        #   conn.commit()
+        #   cur.execute("UPDATE player p SET points = "
+        #            "(SELECT SUM(t.points) FROM tip t "
         #            "INNER JOIN bet b ON b.tip_id = t.tip_id "
-                 #       "WHERE b.player_id = p.player_id)")
+        #       "WHERE b.player_id = p.player_id)")
 
-           # conn.commit()
+        # conn.commit()
 
         else:
             print("Nothing new")
@@ -206,6 +206,9 @@ def evaluateTips_thread():
     # conn.close()
     # Get the json data from the website: drivers,grand prix,Rennergebnis
     # fetch it in the database
+
+
+
 t1 = threading.Thread(target=ui())
 t2 = threading.Thread(target=evaluateTips_thread)
 t1.start()
@@ -213,4 +216,35 @@ t2.start()
 t1.join()
 t2.join()
 
+"""
+app = FastAPI()
 
+
+class loginInfo(BaseModel):
+    username: str
+    password: str
+
+
+@app.post("/login")
+async def fLogin(l: loginInfo):
+    p = PlayerDAO()
+
+    result = p.login(username, password)
+    if result:
+        playerID = result[0]
+        name = result[1]
+        forename = result[2]
+        player = Player(username, name, forename, password)
+        player.playerID = playerID
+        print("Login erfolgreich!")
+        return {"test1"}
+    else:
+
+        return {"test2"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+"""
