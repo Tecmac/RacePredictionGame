@@ -18,22 +18,16 @@ The requirements for the project include having a complete program logic to host
        Object-oriented programming
 Implementation of Data Access Objects (DAO)
 Persistent data storage
-Project Scope:
-Race information will be retrieved from the Ergast.com/API and stored in a custom database to reduce load on the API. To establish a connection to the database, ready-made methods from Psycopg will be used.
+
 </p>
-
-
        
 </details>
 
-
-
-<img width="254" alt="image" src="https://github.com/Tecmac/RacePrediction/assets/53382401/02e65fe1-c69a-4b10-b03d-481b502c943a">
-
-</details>
-
-
-Entwurf
 <details>
-           tejwnf
+       
+<summary>Project Scope</summary>
+Race information will be retrieved from the Ergast.com/API and stored in a custom database to reduce load on the API. To establish a connection to the database, ready-made methods from Psycopg will be used.
+       
 </details>
+Entwurf
+
