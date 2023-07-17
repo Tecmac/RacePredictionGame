@@ -13,7 +13,7 @@ The requirements for the project include having a complete program logic to host
 
 <details>
 
-       <summary>Project Requirements</summary>
+<summary>Project Requirements</summary>
 <p>
        Object-oriented programming
 Implementation of Data Access Objects (DAO)
