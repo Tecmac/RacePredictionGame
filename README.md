@@ -2,6 +2,9 @@
 
 Introduction
 <details>
+       <summary>Introduction</summary>
+       <p>
+       <details>
 <summary>Project target </summary>
        <p>
 The aim of the project is to create a Formula 1 racing prediction game where players can register to make race result predictions. Based on the race results, players will receive points, and the goal for each player is to accumulate the most points to win the game.
@@ -31,3 +34,7 @@ Race information will be retrieved from the Ergast.com/API and stored in a custo
 </details>
 
 
+
+              
+</p>
+</details>
