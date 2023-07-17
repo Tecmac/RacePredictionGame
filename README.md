@@ -1,12 +1,13 @@
 # RacePrediction
 
 Introduction
-<details>
+<Project target>
 
        
 The aim of the project is to create a Formula 1 racing prediction game where players can register to make race result predictions. Based on the race results, players will receive points, and the goal for each player is to accumulate the most points to win the game.
 
 The requirements for the project include having a complete program logic to host a freely accessible web application. Players should be able to submit their predictions, log in, and register through a terminal. Additionally, the project should have fully implemented admin functions, and the algorithm for player prediction submissions should be functional.
+</Project target>
 
 Project Requirements:
 
