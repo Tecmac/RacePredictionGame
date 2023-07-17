@@ -1,6 +1,6 @@
 # RacePrediction
 
-Introduction
+
 <details>
        <summary>Introduction</summary>
        <p>
