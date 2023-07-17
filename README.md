@@ -29,5 +29,5 @@ Persistent data storage
 Race information will be retrieved from the Ergast.com/API and stored in a custom database to reduce load on the API. To establish a connection to the database, ready-made methods from Psycopg will be used.
        
 </details>
-Entwurf
+
 
