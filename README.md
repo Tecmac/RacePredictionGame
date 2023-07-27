@@ -59,8 +59,7 @@ __bet__ (<ins>#player_Id,#tip_id</ins>) <br>
 __Driver__ (<ins>Driver_ID</ins>, Name, Forename, Nationality, RaceNumber, Birthday)<br>
 __Raceresult__ (<ins>#Driver,#Race_ID</ins>, result)
 
-The object diagram shows a typical situation: An admin - here "admin" - can manage several players (enumeration). The player Michael Schumacher has the password "hash" and the gamertag "Schumi". The admin has the gamertag, name and first name "admin" and the password "hash".
-Description ERM and RM
+
 The ERM consists of the entity types Player, Tip, Race, Circuit, Driver as well as the association tables Bet and Raceresult which are necessary due to n:m cardinality.
 
 Player has the attributes Gamertag, Forename, Name, Password and Points as well as the identifying attribute Player_ID. Player can bet on multiple tips, multiple players can bet on one tip, so an n-m relationship is necessary here.
