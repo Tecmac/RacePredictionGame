@@ -1,4 +1,4 @@
-# RacePrediction
+# Race Prediction Game
 
 
 
