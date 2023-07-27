@@ -33,5 +33,12 @@ The programm is used via the terminal in the future i will deploy an Website wit
 ## Diagramms and Models
 
        
+### Relational-Model
+__Player__ (<ins>Player_ID</ins>,Gamertag, Name, Vorname, Password, Points)<br>
+__Tip__ ( <ins>Tip_ID</ins>,#Driver_ID,#race_ID, result, points) <br>
+__Race__ (<ins>Race_ID</ins>, Season,#circuit_ID time, date) <br>
+__Circuit__ (<ins>Circuit_ID</ins>, Country, Name, Locality) <br>
+__bet__ (<ins>#player_Id,#tip_id</ins>) <br>
+__Driver__ (<ins>Driver_ID</ins>, Name, Forename, Nationality, RaceNumber, Birthday)<br>
+__Raceresult__ (<ins>#Driver,#Race_ID</ins>, result)
 
-       
