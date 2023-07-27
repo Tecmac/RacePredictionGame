@@ -36,11 +36,13 @@ The programm is used via the terminal in the future i will deploy an Website wit
 ## Diagramms and Models
 
 ### Use-Case-Diagramm
-![UseCase](Diagramms/UseCaseDiagramm.jpg) <br>
+<img src="Diagramms/UseCaseDiagramm.png" alt="UseCase" width="500">
+
 People using the RacePrediction Game application have the option to register and become a player of this application. A player can view their submitted tips for a race and also place bets on a driver. The available races and drivers for betting are displayed for the player to make their choice. The admin has the ability to delete players. Both the admin and players can log in to the Race Prediction Game, and individuals can register using their data.
 
 ### Classdiagramm
-![ClassDiagramm](Diagramms/ClassDiagramm.png)<br>
+<img src="Diagramms/ClassDiagramm.png" alt="ClassDiagramm" width="800">
+
 The Administration class has the functions register which allows people to register, the login() function allows players to log in and the evaluateTips function scores players' tips when race results are received. Admin and player inherit from the User class the attributes gamertag, name, forename ,password and the login function to log in. The player has the attributes playerID and Points, as well as the functions giveTip to submit a tip, getAllTips to view submitted tips and getTipsRace to get tip submissions from the player for a specific race.
 The admin has the deletePlayer function to delete players and the updateAll function to get the latest race results. The players and the admin know one administration, the administration knows one admin and none to any number of players
 
