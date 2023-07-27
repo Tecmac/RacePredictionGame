@@ -50,9 +50,11 @@ The admin has the deletePlayer function to delete players and the updateAll func
 ![ObjectDiagramm](Diagramms/ObjectDiagramm.png) <br>
 The object diagram shows a typical situation: An admin - here "admin" - can manage several players (enumeration). The player Michael Schumacher has the password "hash" and the gamertag "Schumi". The admin has the gamertag, name and first name "admin" and the password "hash".
 
-### Entity-relationship-model and Relational-model
+### Entity-relationship-model  
 ![ERD](Diagramms/ERD.png)
 
+
+### Relational-model
 __Player__ (<ins>Player_ID</ins>,Gamertag, Name, Vorname, Password, Points)<br>
 __Tip__ ( <ins>Tip_ID</ins>,#Driver_ID,#race_ID, result, points) <br>
 __Race__ (<ins>Race_ID</ins>, Season,#circuit_ID time, date) <br>
